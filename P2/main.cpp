@@ -7,16 +7,16 @@
 using namespace std;
 
 // Convertir boolean a string
-std::string toString(bool valor) {
+std::string toString(bool valor){
     return valor ? "true" : "false";
 }
 //funcion cuenta para hacer split 
-void Cuenta(string s, const char Separadorr, int &TotalChars) {
+void Cuenta(string s, const char Separadorr, int &TotalChars){
     for (int i = 0; i < s.size(); i++)
         if (s[i] == Separadorr) TotalChars++;
 }
-//split 
-void split(string Linea, char Separador, vector<string> &TempBuff, int &TotalVector) {
+//funcion split, para separar por "x" caracter 
+void split(string Linea, char Separador, vector<string> &TempBuff, int &TotalVector){
     TempBuff.resize(0);
     TotalVector = 0;
     int Nums = -1;
@@ -44,6 +44,7 @@ void split(string Linea, char Separador, vector<string> &TempBuff, int &TotalVec
     }
 }
 
+//clase experimento para almacenar datos
 class Experiment{
 	private:
 		int calidad;
@@ -52,17 +53,13 @@ class Experiment{
 		void setDatos(int q, string nom);
 		int getCalidad();
 		string getNombre();
-
-		
 };
 
+//metodos de la clase
 void Experiment::setDatos(int q, string nom){
 	calidad=q;
 	nombre=nom;
 }
-
-
-
 int Experiment::getCalidad(){
 	return calidad;
 }
@@ -70,8 +67,7 @@ string Experiment::getNombre(){
 	return nombre;
 }
 
-//======================================================================
-//funcion para dividir el array y hacer los intercambios
+//funcion para dividir el array y hacer los intercambios, para hacer quicksort
 int dividir(Experiment vector[], int inicio, int fin){
   
   //variables para intercambiar valores 
@@ -95,7 +91,7 @@ int dividir(Experiment vector[], int inicio, int fin){
       izq++;
     }
 
-    // Si todavia no se cruzan los indices seguimos intercambiando
+  // Si todavia no se cruzan los indices seguimos intercambiando
 	if(izq < der){
       v_izq= vector[izq].getCalidad();
       v_der= vector[der].getCalidad();
@@ -120,11 +116,9 @@ int dividir(Experiment vector[], int inicio, int fin){
   return der;
 }
 
-//						Funcion Quicksort
-//======================================================================
+//Funcion Quicksort
 //funcion recursiva para hacer el ordenamiento
-void quicksort(Experiment vector[], int inicio, int fin)
-{
+void quicksort(Experiment vector[], int inicio, int fin){
   int pivote;
   if(inicio < fin)
   {
@@ -136,7 +130,7 @@ void quicksort(Experiment vector[], int inicio, int fin)
 
 //======================================================================
 
-
+//begin main
 
 int main( int argc, char **argv) {
 	std::string n_str, k_str; // valor n y k en string
@@ -184,14 +178,5 @@ int main( int argc, char **argv) {
 			contador++;
 		}
 		cout<<endl;
-	}
-
-
-	
-
-
-	
-
-	
-
+	}	
 }

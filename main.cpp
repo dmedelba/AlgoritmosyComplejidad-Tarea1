@@ -6,13 +6,15 @@
 #include <fstream>
 using namespace std;
 
+
+
 // Convertir boolean a string
 std::string toString(bool valor) {
     return valor ? "true" : "false";
 }
 //funcion cuenta para hacer split 
 void Cuenta(string s, const char Separadorr, int &TotalChars) {
-    for (unsigned int i = 0; i < s.size(); i++)
+    for (int i = 0; i < s.size(); i++)
         if (s[i] == Separadorr) TotalChars++;
 }
 //split 
@@ -44,12 +46,62 @@ void split(string Linea, char Separador, vector<string> &TempBuff, int &TotalVec
     }
 }
 
+class valores{
+	private:
+		int f;
+		int g;
+	public:
+		void setDatos(int new_f, int new_g);
+		int getF();
+		int getG();
+		
+};
+
+void valores::setDatos(int new_f, int new_g){
+	f=new_f;
+	g=new_g;
+}
+
+
+
+int valores::getF(){
+	return f;
+}
+int valores::getG(){
+	return g;
+}
+
+
+//bubblesort
+void bubble_sort(valores array_ordenar[], int n)
+{
+  int c, d, t, t1, t_1,t_2;
+ 
+  for (c = 0 ; c < ( n - 1 ); c++)
+  {
+    for (d = 0 ; d < n - c - 1; d++)
+    {
+      if (array_ordenar[d].getF() > array_ordenar[d+1].getF())
+      {
+        t         = array_ordenar[d].getF();
+        t1        = array_ordenar[d].getG();
+        t_1=array_ordenar[d+1].getF();
+        t_2=array_ordenar[d+1].getG();
+        array_ordenar[d].setDatos(t,t1);
+        array_ordenar[d+1].setDatos(t_1,t_2);
+      }
+   }
+  }
+}
 int main(){
 	std::string n_str, k_str; // valor n y k en string
 	string input_init= "_"; 
 	string input = "_";
+	int total=0;
+	stack<valores> p_valores;
 	//obtenemos nuestra primera linea
 	while(getline(cin,input_init)){ 
+		valores array_ordenar[5];
 		int n =std::stoi(input_init);
 		int array_bd[n];// array que nos indica si nodo n-esimo tiene conexion con la bd
 		for(int i=0; i<n; i++){
@@ -73,11 +125,6 @@ int main(){
 		string input_2;
 		int f; // f->g
 		int g; // dependencias funcionales
-		int array_count[n]; //arreglo que guarda la cantidad de enlacen entrantes
-		for (int i=0;i<n; i++){
-			array_count[i]=0;
-		}
-
 
 		for (int i=0; i<m; i++){
 			//obtenemos los valores de f y g
@@ -88,22 +135,72 @@ int main(){
 
 			f=std::stoi(TempBuff[0]);
 			g=std::stoi(TempBuff[1]);
-			//llenar matriz.
-			matriz_grafo[f][g]=1;
-			array_count[g]++;
+			//llenar matriz, al revez para ver cuantos caminos llegan, no cuantos salen.
+			matriz_grafo[g][f]=1;
 		}
 
 		for(int i=0; i<n; i++){
+			int count=0;
 			for(int j=0; j<n; j++){
-				//buscamos que coincida un 1 con el array_bd
-				//ademas comparamos en array_count para ver si hay más de un camino
-				//que llega a ese mismo nodo
-				if((matriz_grafo[i][j]==1) && (array_bd[j]==1) && (array_count[j]>1)){
-					cout << i ;cout << " " << j << endl;
+				//contamos los caminos que llegan a i
+				if(matriz_grafo[i][j]==1){
+					count+=1;
+				}
+			}
+			// verificamos si hay mas de un camino que llega a i 
+			if (count>1){
+				//i es candidato
+				int hay_camino=-1;
+				//verificar que i tiene conexion a la base de datos
+				if(array_bd[i]==1){
+					//Los caminos que llegan a la fila i producen problemas con la bd
+					hay_camino=i;
+
+				}
+				//verificar que el siguiente nodo conecta a la bd
+				else{
+					int cuentax=0;
+					int marca=0;
+					for(int a=0; a<n; a++){
+						//camino que llega al siguiente nodo
+						if(matriz_grafo[a][i]==1){
+							cuentax+=1;
+							//verificar si a tiene conexion con bd
+							if(array_bd[a]==1){
+								marca=1;
+							}
+						}
+
+					}
+					//verifico que desde ese nodo solo puedo llegar al que tiene conexion con la bd.
+					if(cuentax==1 && marca==1){
+						hay_camino=i;
+					}
+				}
+				//imprimir las dependencias funcioanales que provocan problemas en la bd
+				//caminos que estan en la fila "hay_camino"
+				if(hay_camino!=-1){
+					for(int b=0; b<n; b++){
+						if(matriz_grafo[hay_camino][b]==1){
+							total+=1;
+							cout<<b;cout<<" "<<hay_camino<<endl; 
+						}
+					}
+					
+					//creo arreglo para ordenar
+					
+					//agrego valores al arreglo
+					
+				
+					
+					
+					hay_camino=-1;
 				}
 			}
 
 		}
+		cout<<"hay ";cout<<total;cout<<" dependencias funcionales"<<endl;
+
 		cout<<endl;
 	}
 }

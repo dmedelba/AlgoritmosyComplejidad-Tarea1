@@ -108,29 +108,38 @@ int main(){
 				}
 				//verificar que el siguiente nodo conecta a la bd
 				else{
-					for(int a=0; a<m; a++){
+					int cuentax=0;
+					int marca=0;
+					for(int a=0; a<n; a++){
 						//camino que llega al siguiente nodo
 						if(matriz_grafo[a][i]==1){
+							cuentax+=1;
 							//verificar si a tiene conexion con bd
 							if(array_bd[a]==1){
-								hay_camino=i;
+								marca=1;
 							}
 						}
+
 					}
-					
+					//verifico que desde ese nodo solo puedo llegar al que tiene conexion con la bd.
+					if(cuentax==1 && marca==1){
+						hay_camino=i;
+					}
 				}
 				//imprimir las dependencias funcioanales que provocan problemas en la bd
 				//caminos que estan en la fila "hay_camino"
 				if(hay_camino!=-1){
-					for(int b=0; b<m; b++){
+					for(int b=0; b<n; b++){
 						if(matriz_grafo[hay_camino][b]==1){
+
 							cout<<b;cout<<" "<<hay_camino<<endl; 
 						}
 					}
-					cout<<endl;
+					hay_camino=-1;
 				}
 			}
 
 		}
+		cout<<endl;
 	}
 }

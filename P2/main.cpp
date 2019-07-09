@@ -179,8 +179,7 @@ int main( int argc, char **argv) {
 		int contador=0;
 		while(contador<k){
 			n=n-1;
-			cout<<Array_experimentos[n].getCalidad();
-			cout<< " ";
+			cout<<Array_experimentos[n].getCalidad();cout<< " ";
 			cout<< Array_experimentos[n].getNombre()<<endl;
 			contador++;
 		}
